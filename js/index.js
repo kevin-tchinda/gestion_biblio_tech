@@ -5,9 +5,9 @@ var est_debug = true; // mode debug on
 
 
 // fonction de lancement
-function LancerApplication() {
+const lancerApplication =  () => { // camelCase sur Fonctions et PascalCase sur classes
     // recupere le localstorage
-    var temp_var = localStorage.getItem("biblio_db_final");
+    let temp_var = localStorage.getItem("biblio_db_final"); // Var local, `let`
     // verifie si vide
     if (temp_var) {
         try {
