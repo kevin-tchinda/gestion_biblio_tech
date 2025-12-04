@@ -7,4 +7,11 @@
 ## css/style.css
 - Bloc de code css non indente
 - Descripteur css n'est pas en kebab-case
-- Les descripteurs successifs sont sur plusieurs ligne
+-Manque d’espaces devant les propriétés  mauvaise lisibilité, considéré comme une erreur de style.
+- Les descripteurs successifs sont sur plusieurs ligne 
+-rende le code lisible 
+-jai changer le commentaire “Ligne du bas” par /* Séparateur entre les lignes */ parce que nest pas claire 
+-les commentaires commencent par une majuscule dans /* Bouton bleu */ et rende le plus propre 
+-jai Alignes tous les blocs CSS avec une structure uniforme
+- jai verifier tous les proprietes sont bien syntaxees
+

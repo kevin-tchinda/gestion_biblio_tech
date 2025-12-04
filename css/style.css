@@ -1,4 +1,5 @@
-/* style pour le body */
+/* Style pour le body */
+
 body {
     background: #333;
     color: white;
@@ -6,53 +7,60 @@ body {
 }
 
 .wrapper {
-width: 80%;
-margin: auto;
-background: #444;
-padding: 20px;
+    width: 80%;
+    margin: auto;
+    background: #444;
+    padding: 20px;
 }
 
-/* ligne du bas */
+/* Séparateur entre les lignes */
+
 .row {
-margin-bottom: 10px;
-border-bottom: 1px dashed #999;
-padding-bottom: 5px;
+
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #999;
+    padding-bottom: 5px;
+
 }
 
 input {
-padding: 5px;
+    padding: 5px;
 }
 
-/* bouton bleu */
+
+/* Bouton bleu */
 .btn-add {
-background: blue;
-color: white;
-border: 0;
-padding: 10px;
+    background: blue;
+    color: white;
+    border: 0;
+    padding: 10px;
 }
+
 
 .btn-del {
-background: red;
-color: white;
-border: 0;
-padding: 5px;
+    background: red;
+    color: white;
+    border: 0;
+    padding: 5px;
 }
 
 #zone-m {
-color: yellow;
-font-weight: bold;
+    color: yellow;
+    font-weight: bold;
 }
 
+
 table {
-width: 100%;
-border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 td, th {
-border: 1px solid white;
-padding: 5px;
+    border: 1px solid white;
+    padding: 5px;
 }
 
+
 table tr td:first-child {
-color: orange;
+    color: orange;
 }
