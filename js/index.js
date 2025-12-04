@@ -1,87 +1,114 @@
-// variables globales
-var DATA_BASE = [];
-var x = 0; // compteur
-var est_debug = true; // mode debug on
+// DIHIA:
 
 
-// fonction de lancement
-const lancerApplication =  () => { // camelCase sur Fonctions et PascalCase sur classes
-    // recupere le localstorage
-    let temp_var = localStorage.getItem("biblio_db_final"); // Var local, `let`
-    // verifie si vide
-    if (temp_var) {
-        try {
-        // SYSTEME DE SECURITE - NE PAS TOUCHER
-        DATA_BASE = eval("(" + temp_var + ")");
-        if (DATA_BASE.length > 0) {
-            x = DATA_BASE[DATA_BASE.length - 1].uid;
-        }
-        } catch (e) {
-        console.log("Bug"); // ca ne devrait pas arriver
-        }
+// variables globales Modernité JS :
+let DATA_BASE = [];
+let x = 0; // compteur
+const EST_DEBUG = true; // mode debug on (const car ça ne change pas)
+
+
+
+
+// fonction de lancement  Modernité JS :
+const lancerApplication = () => {
+  // recupere le localStorage
+  const savedData = localStorage.getItem("biblio_db_final");
+
+  if (savedData) {
+    try {
+      // Utilisation de JSON.parse a la place de eval
+      const parsedData = JSON.parse(savedData);
+
+      if (Array.isArray(parsedData) && parsedData.length > 0) {
+        DATA_BASE = parsedData;
+        x = DATA_BASE[DATA_BASE.length - 1].uid;
+      }
+    } catch (error) {
+      console.error("Erreur lors de la lecture du localStorage :", error);
     }
-    Display(); // affiche
-}
+  }
+
+  // Affichage
+  Display(); 
+};
 
 
-function Excecute_Save_Data_To_Memory() {
-    // recupere les valeurs des inputs
-    var v1 = document.getElementById("inp_A").value;
-    var v2 = document.getElementById("inp_B").value;
-    var v3 = document.getElementById("sel_X").value;
-    var v4 = document.getElementById("inp_C").value;
-    // check si vide
-    if (v1 != "") {
-        if (v2 != "") {
-        if (v4.length > 3) {
-            x++; // incremente x
-            // gestion de la date
-            var ajd = new Date();
-            var string =
-            ajd.getDate() +
-            "/" +
-            (ajd.getMonth() + 1) +
-            "/" +
-            ajd.getFullYear();
-            var label = "";
-            // logique complexe categorie
-            if (v3 == "1") label = "Science-Fiction";
-            else if (v3 == "2") label = "Documentaire";
-            else label = "Roman";
-            // objet a sauvegarder
-            var Thing = {
-            uid: x,
-            Name: v1,
-            auteur_name: v2,
-            k: label,
-            stuff: v4 + " | " + string,
-            is_dead: false,
-            };
-            DATA_BASE.push(Thing);
-            sauvegarder_le_tout();
-            Display();
-            // vide les champs
-            document.getElementById("inp_A").value = "";
-            document.getElementById("inp_B").value = "";
-            document.getElementById("inp_C").value = "";
-            alert_user("C'est bon");
-        } else {
-            alert("Erreur ISBN"); // erreur
-        }
-        } else {
-        // alert("Erreur Auteur");
-        alert("Erreur Auteur");
-        }
-    } else {
-        alert("Erreur Titre");
-    }
-}
 
 
-function sauvegarder_le_tout() {
-    // sauvegarde en json string
-    localStorage.setItem("biblio_db_final", JSON.stringify(DATA_BASE));
-}
+
+
+// fonction principale d'enregistrement (camelCase + arrow function)
+const executeSaveDataToMemory = () => {
+  // recuperer les valeurs des inputs
+  const v1 = document.getElementById("inp_A").value.trim(); // titre
+  const v2 = document.getElementById("inp_B").value.trim(); // auteur
+  const v3 = document.getElementById("sel_X").value;        // categorie
+  const v4 = document.getElementById("inp_C").value.trim(); // ISBN
+
+  // validations simples
+  if (!v1) {
+    alert("Erreur Titre");
+    return;
+  }
+
+  if (!v2) {
+    alert("Erreur Auteur");
+    return;
+  }
+
+  if (v4.length <= 3) {
+    alert("Erreur ISBN");
+    return;
+  }
+
+  // incremente le compteur
+  x += 1;
+
+  // gestion de la date
+  const today = new Date();
+  const dateString = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+
+  // logique categorie
+  let label = "Roman";
+  if (v3 === "1") {
+    label = "Science-Fiction";
+  } else if (v3 === "2") {
+    label = "Documentaire";
+  }
+
+  // objet a sauvegarder (on garde les memes cles que notre ancien code)
+  const Thing = {
+    uid: x,
+    Name: v1,
+    auteur_name: v2,
+    k: label,
+    stuff: `${v4} | ${dateString}`,
+    is_dead: false
+  };
+
+  DATA_BASE.push(Thing);
+  sauvegarderLeTout(); // nouveau nom camelCase
+
+  Display();
+
+  // vider les champs
+  document.getElementById("inp_A").value = "";
+  document.getElementById("inp_B").value = "";
+  document.getElementById("inp_C").value = "";
+
+  alert_user("C'est bon !");
+};
+
+
+
+//sauvegarderLeTout
+const sauvegarderLeTout = () => {
+  localStorage.setItem("biblio_db_final", JSON.stringify(DATA_BASE));
+};
+
+
+
+//MASSI :
 
 
 function Display() {

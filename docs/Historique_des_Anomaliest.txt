@@ -1,6 +1,154 @@
 # ------------- HISTORIQUE DES ANOMALIES ------------- #
 # dihia-kabeche
-- 
 
 
+1. Utilisation de var:
+Description : Le code utilise var pour déclarer les variables.
+Problème : var possède un comportement ancien (scope fonction + hoisting) et peut provoquer des bugs.
+Doit être remplacé par let ou const.
+
+
+2. Utilisation dangereuse de eval()
+Description : Le chargement des données depuis localStorage se fait avec :
+eval("(" + temp_var + ")");
+Problème : eval exécute du code arbitraire : risque majeur de sécurité.
+Doit être remplacé par JSON.parse.
+
+
+
+3. Noms de fonctions non conformes (camelCase)
+Description : Plusieurs fonctions n’utilisent pas le camelCase, ex :
+Excecute_Save_Data_To_Memory()
+Problème : Non conforme aux normes modernes JavaScript.
+ Doit devenir : executeSaveDataToMemory()
+
+
+ 4. Nom incorrect ou mal orthographié
+Description :
+Excecute contient une faute : devrait être Execute(cést ca le nom en anglais)
+Traits de soulignement _ non autorisés dans les noms de fonctions modernes comme on l'avais deja mentionné en haut : Execute_Save_Data_To_Memory
+Problème : Non professionnel + non conforme aux standards.
+
+
+
+5. Mélange incohérent entre constantes et variables
+Description :
+est_debug aurait dû être une constante (const)
+Problème : Incohérence dans la gestion du code et conventions non respectées.
+
+
+
+6. Validation des champs trop complexe et imbriquée
+Description : Plusieurs if imbriqués inutilement :
+if (v1 != "") {
+    if (v2 != "") {
+        if (v4.length > 3) {
+            ...
+Problème : Difficile à lire, à maintenir et à déboguer.
+Donc Nous deveons utiliser des retours anticipés (return).
+
+
+
+
+7. Construction de chaînes de caractères archaïque
+Description :
+Concaténations comme :
+v4 + " | " + string
+Problème : Peu lisible et non moderne.
+À remplacer par des template strings :
+`${v4} | ${string}`
+
+
+
+
+8. Génération manuelle de dates
+Description :
+ajd.getDate() + "/" + (ajd.getMonth() + 1) + "/" + ajd.getFullYear()
+Problème : Peu lisible et non standard, pas de padding, pas localisé.
+
+
+
+9. Pas d’utilisation de .trim()
+Description : Les champs sont vérifiés avec :
+if (v1 != "")
+Problème : Des espaces peuvent être considérés comme du texte.
+Risque d’enregistrer des valeurs vides.
+
+
+
+
+10. Logique de catégorie rigide
+Description :
+if (v3 == "1") label = "Science-Fiction";
+else if (v3 == "2") label = "Documentaire";
+else label = "Roman";
+Problème : Non évolutif, difficile à maintenir.
+Devrait utiliser un dictionnaire/mapping.
+
+
+
+
+11. Aucune séparation des responsabilités
+Description :
+La fonction Excecute_Save_Data_To_Memory fait :
+validation
+génération de date
+création d’objet
+insertion en base
+sauvegarde
+remise à zéro du formulaire
+affichage
+Problème : Fonction trop longue : difficile à tester, modifier, débugger.
+
+
+
+
+12. Mauvaise gestion d’erreur utilisateur
+Description :
+Les messages d’erreur sont très vagues :
+"Erreur ISBN"
+"Erreur Auteur"
+Problème : Manque d’information pour comprendre l’erreur.
+
+
+
+14. Pas de vérification d’existence des éléments DOM
+Description :
+Le code suppose que les éléments existent :
+document.getElementById("inp_A").value
+Problème : Si l’élément manque : erreur non gérée.
+
+
+
+
+15. Code répétitif non factorisé
+Description :
+Plusieurs lignes identiques pour vider les champs :
+document.getElementById("inp_A").value = "";
+document.getElementById("inp_B").value = "";
+document.getElementById("inp_C").value = "";
+Problème : Manque de modularité : violation du principe DRY ("Don't Repeat Yourself").
+
+
+
+
+16. Pas d’utilisation des arrow functions
+Description : Certaines fonctions utilisent encore la syntaxe classique.
+Problème : Non conforme aux exigences de modernisation du projet.
+
+
+
+
+17. Mauvaise gestion de la base de données (DATA_BASE)
+Description :
+La base est modifiée directement sans copie, sans contrôle.
+Problème : Risque d’incohérence ou corruption des données.
+
+
+
+
+18. Nom de propriété ambigu : is_dead
+Description :
+Le champ is_dead n’est pas clair pour décrire l’état d’un livre.
+Problème : Nom peu professionnel et ambigu : mauvaise lisibilité.
 
