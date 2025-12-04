@@ -1,8 +1,8 @@
 /* style pour le body */
 body {
-background: #333;
-color: white;
-font-family: "Courier New";
+    background: #333;
+    color: white;
+    font-family: "Courier New";
 }
 
 .wrapper {
@@ -38,7 +38,7 @@ border: 0;
 padding: 5px;
 }
 
-#zone_m {
+#zone-m {
 color: yellow;
 font-weight: bold;
 }
@@ -48,8 +48,7 @@ width: 100%;
 border-collapse: collapse;
 }
 
-td,
-th {
+td, th {
 border: 1px solid white;
 padding: 5px;
 }

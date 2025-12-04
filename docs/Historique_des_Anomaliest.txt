@@ -3,4 +3,8 @@
 - 
 
 
-
+# lyliane-aouchiche
+## css/style.css
+- Bloc de code css non indente
+- Descripteur css n'est pas en kebab-case
+- Les descripteurs successifs sont sur plusieurs ligne
