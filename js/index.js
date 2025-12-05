@@ -1,80 +1,78 @@
 // variables globales
-var DATA_BASE = [];
-var x = 0; // compteur
-var est_debug = true; // mode debug on
+let DATA_BASE = [];
+let x = 0; // compteur
+let est_debug = true; // mode debug on
 
 
 // fonction de lancement
-const lancerApplication =  () => { // camelCase sur Fonctions et PascalCase sur classes
+function lancerApplication () { // camelCase sur Fonctions et PascalCase sur classes
     // recupere le localstorage
-    let temp_var = localStorage.getItem("biblio_db_final"); // Var local, `let`
+    const temp_var = localStorage.getItem("biblio_db_final"); //
     // verifie si vide
     if (temp_var) {
         try {
         // SYSTEME DE SECURITE - NE PAS TOUCHER
-        DATA_BASE = eval("(" + temp_var + ")");
+        DATA_BASE = JSON.parse(storedData);
+        //mise a jour de compteur x
         if (DATA_BASE.length > 0) {
             x = DATA_BASE[DATA_BASE.length - 1].uid;
         }
-        } catch (e) {
+        } catch (error);
+        ) {
         console.log("Bug"); // ca ne devrait pas arriver
         }
     }
-    Display(); // affiche
+    afficherTableau(); // affichage du tableau
 }
 
 
-function Excecute_Save_Data_To_Memory() {
+function enregistrerLivre() {
     // recupere les valeurs des inputs
-    var v1 = document.getElementById("inp_A").value;
-    var v2 = document.getElementById("inp_B").value;
-    var v3 = document.getElementById("sel_X").value;
-    var v4 = document.getElementById("inp_C").value;
-    // check si vide
-    if (v1 != "") {
-        if (v2 != "") {
-        if (v4.length > 3) {
-            x++; // incremente x
-            // gestion de la date
-            var ajd = new Date();
-            var string =
-            ajd.getDate() +
-            "/" +
-            (ajd.getMonth() + 1) +
-            "/" +
-            ajd.getFullYear();
-            var label = "";
-            // logique complexe categorie
-            if (v3 == "1") label = "Science-Fiction";
-            else if (v3 == "2") label = "Documentaire";
-            else label = "Roman";
-            // objet a sauvegarder
-            var Thing = {
-            uid: x,
-            Name: v1,
-            auteur_name: v2,
-            k: label,
-            stuff: v4 + " | " + string,
-            is_dead: false,
-            };
-            DATA_BASE.push(Thing);
-            sauvegarder_le_tout();
-            Display();
+    const titre = document.getElementById("inp_A").value;
+    const auteur = document.getElementById("inp_B").value;
+    const categorie = document.getElementById("sel_X").value;
+    const isbn = document.getElementById("inp_C").value;
+    // validation (early return)
+    if (!titre) {
+        alert("erreur Titre");
+        return;
+    }
+    if (!auteur) {
+        alert("Erreur auteur");
+        return
+    }
+    if (!isbn || isbn.length <= 3) {
+        alert("erreur ISBN");
+        return;
+    }
+            
+    // Date identique à l'original
+    const ajd = new Date();
+    const dateStr = `${ajd.getDate()}/${ajd.getMonth() + 1}/${ajd.getFullYear()}`;
+
+    // Catégorie (logique identique, code propre)
+    const label = categorie === "1" ? "Science-Fiction" :
+                  categorie === "2" ? "Documentaire" :
+                  "Roman";
+           //creation de livre
+           x++; 
+    const livre = {
+        uid: x,
+        Name: titre,
+        auteur_name: auteur,
+        k: label,
+        stuff: `${isbn} | ${dateStr}`,
+        is_dead: false
+    };
+            DATA_BASE.push(livre);
+            sauvegarder();
+
+            afficherTableau();
             // vide les champs
             document.getElementById("inp_A").value = "";
             document.getElementById("inp_B").value = "";
             document.getElementById("inp_C").value = "";
-            alert_user("C'est bon");
-        } else {
-            alert("Erreur ISBN"); // erreur
-        }
-        } else {
-        // alert("Erreur Auteur");
-        alert("Erreur Auteur");
-        }
-    } else {
-        alert("Erreur Titre");
-    }
+           afficherMessage("cest bon")
 }
 
 
@@ -84,90 +82,161 @@ function sauvegarder_le_tout() {
 }
 
 
-function Display() {
-    var el = document.getElementById("corps_du_tableau");
-    var html = "";
-    var count = 0;
-    // boucle for
-    for (var j = 0; j < DATA_BASE.length; j++) {
-        var o = DATA_BASE[j];
-        // check si mort
-        if (o.is_dead == false) {
-        count++;
-        // concatenation html
-        html +=
-            "<tr>" +
-            "<td>#" +
-            o.uid +
-            "</td>" +
-            "<td><b>" +
-            o.Name.toUpperCase() +
-            "</b><br><i>" +
-            o.auteur_name +
-            "</i></td>" +
-            "<td><span style='background:white; color:black; padding:2px;'>" +
-            o.k +
-            "</span></td>" +
-            "<td>" +
-            o.stuff +
-            "</td>" +
-            "<td><button class='btn-del' onclick='del(" +
-            o.uid +
-            ")'>X</button></td>" +
-            "</tr>";
+function afficherTableau() {
+    // Récupère l'élément <tbody> du tableau
+    const corps = document.getElementById("corps_du_tableau");
+
+    // on va vider le tableau avant de le construire pour que evite les doublons et on garantit un affichage propre
+    corps.innerHTML = "";
+
+    // compteur de livres actifs
+    let count = 0;
+
+    // parcourt tous les elements de la base de donnees locale
+    DATA_BASE.forEach(livre => {
+
+        // on va verifier ce que le livre n'est pas supprimer (soft delete)
+        if (!livre.is_dead) {
+
+            count++; // incremente le nombre de livres affiches
+
+            // creation d'une nouvelle ligne tr pour le tableau 
+            const tr = document.createElement("tr");
+
+            // remplissage de la ligne html avec les info du livre
+            tr.innerHTML = `
+                <td>#${livre.uid}</td> 
+                <!-- ID unique du livre -->
+
+                <td>
+                    <b>${livre.Name.toUpperCase()}</b>
+                    <!-- Titre du livre en majuscules -->
+                    <br>
+                    <i>${livre.auteur_name}</i>
+                    <!-- Nom de l'auteur en italique -->
+                </td>
+
+                <td>
+                    <span class="badge">${livre.k}</span>
+                    <!-- Catégorie du livre (formatée via CSS .badge) -->
+                </td>
+
+                <td>${livre.stuff}</td>
+                <!-- Informations composées : ISBN + date d'ajout -->
+
+                <td>
+                    <button class="btn-del" data-id="${livre.uid}">X</button>
+                    <!-- Bouton de suppression (soft delete) + data-id pour identifier le livre -->
+                </td>
+            `;
+
+            // ajoute la ligne au tableau
+            corps.appendChild(tr);
         }
-    }
-    el.innerHTML = html;
-    document.getElementById("cpt").innerHTML = count;
-    }
+    });
+
+    // affichage du nombre total de livres actifs dans la zone de compteur
+    document.getElementById("cpt").innerText = count;
+
+    // ajouter la suppretion a chaque bouton
+    document.querySelectorAll(".btn-del").forEach(btn => {
+
+        // ecouteurs d'événements propre
+        btn.addEventListener("click", () => {
+
+            // appel la fonction de suppression en passant l'id de livre concerner
+            supprimerLivre(btn.dataset.id);
+        });
+    });
+}
 
 
-function del(id) {
-    // demande confirmation
+
+
+
+function supprimerLivre(id) {
+    // Affiche une boîte de confirmation pour éviter une suppression accidentelle
     if (confirm("Supprimer ?")) {
-        for (var z = 0; z < DATA_BASE.length; z++) {
-        if (DATA_BASE[z].uid == id) {
-            // soft delete
-            DATA_BASE[z].is_dead = true;
+
+        // on parcourt tous les livres de la base de donnees 
+        for (let z = 0; z < DATA_BASE.length; z++) {
+
+            // on verifie si lidentifiant correspond au livre a supprimer 
+            if (DATA_BASE[z].uid == id) {
+
+                // soft delete
+                DATA_BASE[z].is_dead = true;
+            }
         }
-        }
-        sauvegarder_le_tout();
-        Display();
+
+        sauvegarder();
+        afficherTableau();
     }
 }
 
 
-function regarder(val) {
-    var t = document.getElementById("tab");
-    var rows = t.getElementsByTagName("tr");
-    var f = val.toUpperCase();
-    // boucle sur les tr
-    for (var i = 1; i < rows.length; i++) {
-        var col = rows[i].getElementsByTagName("td")[1];
-        if (col) {
-        var txt = col.textContent || col.innerText;
-        if (txt.toUpperCase().indexOf(f) > -1) {
-            rows[i].style.display = ""; // montre
-        } else {
-            rows[i].style.display = "none"; // cache
-        }
+
+
+
+function rechercher(valeursRecherche) {
+    // Récupère l'élément tableau complet
+    const tableau = document.getElementById("tab");
+
+    // Récupère toutes les lignes du tableau (tr)
+    const lignes = tableau.getElementsByTagName("tr");
+
+    // Convertit la valeur recherchée en majuscules pour comparaison
+    const filtre = valeursRecherche.toUpperCase();
+
+    // boucle sur toutes les lignes sauf l'en-tete (i=1)
+    for (let i = 1; i < lignes.length; i++) {
+
+        // Colonne 1 = colonne contenant titre + auteur
+        const colonne = lignes[i].getElementsByTagName("td")[1];
+
+        if (colonne) {
+
+            //// on Récupère le texte du titre/auteur
+            const texte = colonne.textContent || colonne.innerText;
+
+            // on convertit en majuscules pour comparer
+            const texteMaj = texte.toUpperCase();
+
+            // Si le texte contient le filtre → on affiche la ligne
+            if (texteMaj.indexOf(filtre) > -1) {
+                lignes[i].style.display = "";
+            } 
+            // Sinon → on cache la ligne
+            else {
+                lignes[i].style.display = "none";
+            }
         }
     }
 }
+
+
+
 
 
 // fonction pour tuer la base
-function kill() {
+function resetDatabase() {
+    // Efface complètement toutes les données stockées dans le localStorage
     localStorage.clear();
+
+    // Recharge la page pour repartir sur une base vide
     location.reload();
 }
 
 
-function alert_user(msg) {
-    var z = document.getElementById("zone_m");
-    z.innerText = msg;
-    // attend 3 secondes
-    setTimeout(function () {
-        z.innerText = "";
+
+
+
+function afficherMessage(message) {
+    const zoneMessage = document.getElementById("zone_m");
+    zoneMessage.innerText = message;
+
+    // attend 3 secondes supprime le message après 3 secondes
+    setTimeout(() => {
+        zoneMessage.innerText = "";
     }, 3000);
 }

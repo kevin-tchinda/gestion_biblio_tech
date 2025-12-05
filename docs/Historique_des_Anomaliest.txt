@@ -4,3 +4,59 @@
 
 
 
+# massinissa css
+#la classe .form-container n’existe pas dans mon css:
+<div id="formulaire-ajout" class="form-container"> HTML refactoré n’utilise plus le style inline background:#222;padding:15px,
+donc sans CSS, le design n’est plus identique à l’original.
+#Le style du champ de recherche n’est plus appliqué
+Dans mon HTML original, le style était inline : <input style="background:#ffffcc;color:black;">
+on a suprimer ce inline et on doit compenser
+.row { ... } => CSS jamais utilisée dans le HTML. Le commentaire “ligne du bas” n’a aucune correspondance.
+# le css n'as aucune structure ce qui vous dire toute est melanger
+#Le CSS est maintenant organisé en sections:
+→ Base
+→ Layout
+→ Formulaire
+→ Boutons
+→ Tableau
+#Style du champ recherche manquant parceque le html perd son style donc on ajoute .search-field
+#Bouton RAZ non stylé parce que e HTML original utilisait le style par défaut donc on ajoute .btn-reset
+#Pas de base commune pour les boutons ce qui est incoherent on doit ajouter .btn
+#.row inutilisee car cest un code mort il a aucune importance donc on doit le supprimer 
+#table CSS non structuré qui rend la laisibilite faible donc on doit grouper les blocks
+# le body il a pas de reset ce qui le rend non standard donc on doit ajouter margin();padding()
+
+
+
+#massinissa index.js
+1-variables globales "var"
+2-erreur de securite :DATA_BASE = eval("(" + temp_var + ")"); c'est une grosse faille de XSS qui fait qun utilisateur peut injecter du code 
+3-Nom de fonction incohérent: <body onload="LancerApplication()"> on doit utiliser les camelcase pour les fonctions et elle doit commencer par un miniscule car la majuscule est reserver aux classes 
+4-Fonction beaucoup trop longue comme : Excecute_Save_Data_To_Memory()
+5-Noms de variables très mauvais : var v1, v2, v3, v4
+var Thing
+6-Chaine de if imbriqués: if(v1 != "") {
+    if(v2 != "") {
+        if(v4.length > 3) {  on doit utiliser early return pour reduire la complexite
+7-HTML construit en chaîne ce qui en danger XSS et nest pas standard comme : html += "<tr><td>#" + o.uid + "</td>" + ...
+donc il risque dinjection et on prefere les fonctions modernes
+8- nom insufisant et pas expliciter  : function del(id) { ... } ce nom on sait pas ce qui'l fait
+9-soft delete mal implimenter : DATA_BASE[z].is_dead = true; on doit gerer les ressources correctement
+10-Recherche basée sur DOM pas sur les donnees comme : rows[i].style.display = "none";
+la logique de recherche est attachee directement au tableau html 
+et il est pas basee sur data base 
+11- la fonction kill : on doit le nommer en proffessionnel
+12- alert_user le nom est correct mais style inline attendu quo fait dependre du dom et en plus ya pas de class css dediee
+
+
+
+
+
+
+
+
+
+-----------------fonction afficherTableau-----------------
+-display nest pas un camelcase donc on la changer avec afficherTableau
+-Concaténation de HTML en chaînes de texte || html += "<tr>" + ... || tres difficile a lire et a maintenir on va le remplacer par le DOM
+-Pas de addEventListener, onclick inline dans HTML

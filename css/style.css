@@ -1,10 +1,10 @@
-/* style pour le body */
+/* style de base  */
 body {
 background: #333;
 color: white;
 font-family: "Courier New";
 }
-
+/*layout */
 .wrapper {
 width: 80%;
 margin: auto;
@@ -12,24 +12,41 @@ background: #444;
 padding: 20px;
 }
 
-/* ligne du bas */
-.row {
-margin-bottom: 10px;
-border-bottom: 1px dashed #999;
-padding-bottom: 5px;
+/* formulaire : on va remplacer les inlines du html */
+.form-container {
+    background: #222;
+    padding: 15px;
 }
-
+/*style dorigine pour les inputs*/
 input {
 padding: 5px;
 }
+/* champ de recherche style inline deplacer de html */
+.search-field{
+    background: #ffffcc;
+    color: black;
+}
+/* Zone de message utilisateur (identique) */
+#zone_m {
+color: yellow;
+font-weight: bold;
+}
+/* LES BOUTONS  */
+/* style commun de bouton */
 
-/* bouton bleu */
+.btn {
+    border: 0;
+    cursor: pointer;
+}
+/* Bouton ENREGISTRER */
+
 .btn-add {
 background: blue;
 color: white;
 border: 0;
 padding: 10px;
 }
+/* Bouton supprimer*/
 
 .btn-del {
 background: red;
@@ -37,11 +54,15 @@ color: white;
 border: 0;
 padding: 5px;
 }
+/* Bouton RAZ */
 
-#zone_m {
-color: yellow;
-font-weight: bold;
+.btn-reset {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 6px;
 }
+/* TABLEAU*/
 
 table {
 width: 100%;
