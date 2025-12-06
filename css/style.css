@@ -16,11 +16,9 @@ body {
 /* Séparateur entre les lignes */
 
 .row {
-
     margin-bottom: 10px;
     border-bottom: 1px dashed #999;
     padding-bottom: 5px;
-
 }
 
 input {
