@@ -158,7 +158,7 @@ function del(id) {
             DATA_BASE[z].is_dead = true;
         }
         }
-        sauvegarder_le_tout();
+        sauvegarderLeTout();
         Display();
     }
 }
