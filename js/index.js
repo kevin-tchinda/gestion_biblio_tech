@@ -172,7 +172,7 @@ const supprimerLivre = (id) => {
     // on parcourt tous les livres de la base de donnees
     for (let z = 0; z < dataBase.length; z++) {
       // on verifie si lidentifiant correspond au livre a supprimer
-      if (dataBase[z].uid == id) {
+      if (dataBase[z].uid === id) {
         // soft delete
         dataBase[z].isDead = true;
       }
