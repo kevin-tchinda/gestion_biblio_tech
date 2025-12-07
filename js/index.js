@@ -2,7 +2,7 @@
 
 // variables globales Modernité JS :
 let dataBase = [];
-let idLivre = 0; // Compteur de suppression - identifie chaque element à supprimer (soft delete)
+let idLivre = 0; // Identifiant d'un livre
 const BIBLIO_DB_FINAL = "biblio_db_final";
 
 // fonction de lancement
