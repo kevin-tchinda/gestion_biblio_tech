@@ -2,7 +2,7 @@
 
 // variables globales Modernité JS :
 let dataBase = [];
-let x = 0; // compteur
+let idLivre = 0; // Identifiant d'un livre
 const BIBLIO_DB_FINAL = "biblio_db_final";
 
 // fonction de lancement
@@ -19,7 +19,7 @@ const lancerApplication = () => {
 
       if (Array.isArray(parsedData) && parsedData.length > 0) {
         dataBase = parsedData;
-        x = dataBase[dataBase.length - 1].uid;
+        idLivre = dataBase[dataBase.length - 1].uid;
       }
     } catch (error) {
       // e: paramètre pas explicite
@@ -33,10 +33,10 @@ const lancerApplication = () => {
 // fonction principale d'enregistrement (camelCase + arrow function)
 const executeSaveDataToMemory = () => {
   // recuperer les valeurs des inputs
-  const titre = document.getElementById("inp_A").value.trim(); // titre
-  const auteur = document.getElementById("inp_B").value.trim(); // auteur
-  const categorie = document.getElementById("sel_X").value; // categorie
-  const isbn = document.getElementById("inp_C").value.trim(); // ISBN
+  const titre = document.getElementById("input-titre").value.trim(); // titre
+  const auteur = document.getElementById("input-auteur").value.trim(); // auteur
+  const categorie = document.getElementById("select-category").value; // categorie
+  const isbn = document.getElementById("input-isbn").value.trim(); // ISBN
 
   // validation (early return)
   if (!titre) {
@@ -53,7 +53,7 @@ const executeSaveDataToMemory = () => {
   }
 
   // incremente le compteur
-  x += 1;
+  idLivre += 1;
 
   // gestion de la date
   const today = new Date();
@@ -72,12 +72,12 @@ const executeSaveDataToMemory = () => {
   // objet a sauvegarder (on garde les memes cles que notre ancien code)
 
   const livre = {
-    uid: x,
+    uid: idLivre,
     title: titre,
     author: auteur,
     category: label,
     info: `${isbn} | ${dateString}`,
-    isDead: false,
+    isDelete: false,
   };
 
   dataBase.push(livre);
@@ -86,9 +86,9 @@ const executeSaveDataToMemory = () => {
   afficherTableau();
 
   // vider les champs
-  document.getElementById("inp_A").value = "";
-  document.getElementById("inp_B").value = "";
-  document.getElementById("inp_C").value = "";
+  document.getElementById("input-titre").value = "";
+  document.getElementById("input-auteur").value = "";
+  document.getElementById("input-isbn").value = "";
 
   afficherMessage("C'est bon !");
 };
@@ -113,7 +113,7 @@ const afficherTableau = () => {
   // parcourt tous les elements de la base de donnees locale
   dataBase.forEach((livre) => {
     // on va verifier ce que le livre n'est pas supprimer (soft delete)
-    if (!livre.isDead) {
+    if (!livre.isDelete) {
       count++; // incremente le nombre de livres affiches
 
       // creation d'une nouvelle ligne tr pour le tableau
@@ -167,7 +167,7 @@ const supprimerLivre = (id) => {
   if (!livre) return;
 
   // Soft delete
-  livre.isDead = true;
+  livre.isDelete = true;
 
   // Sauvegarde et rafraîchissement d’affichage
   sauvegarderLeTout();
@@ -211,7 +211,7 @@ const rechercher = (valeursRecherche) => {
 
 
 // fonction pour tuer la base
-const resetDatabase = () => {
+const resetDataBase = () => {
   // Efface complètement toutes les données stockées dans le localStorage
   localStorage.clear();
 
@@ -241,7 +241,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // RAZ/Reinitialiser
   document.getElementById("btn-reset")
-    .addEventListener("click", resetDatabase);
+    .addEventListener("click", resetDataBase);
 
   // Champ de recherche
   const searchField = document.querySelector(".search-field");
