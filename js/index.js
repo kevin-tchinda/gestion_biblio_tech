@@ -153,34 +153,29 @@ const afficherTableau = () => {
     }
   });
 
-  // affichage du nombre total de livres actifs dans la zone de compteur
-  document.getElementById("cpt").innerText = count;
+    // affichage du nombre total de livres actifs dans la zone de compteur
+    document.getElementById("cpt").innerText = count;
 
-  // ajouter la suppretion a chaque bouton
-  document.querySelectorAll(".btn-del").forEach((btn) => {
-    // ecouteurs d'événements propre
-    btn.addEventListener("click", () => {
-      // appel la fonction de suppression en passant l'id de livre concerner
-      supprimerLivre(btn.dataset.id);
-    });
-  });
 };
+
 
 const supprimerLivre = (id) => {
-  // Affiche une boîte de confirmation pour éviter une suppression accidentelle
-  if (confirm("Supprimer ?")) {
-    // on parcourt tous les livres de la base de donnees
-    for (let z = 0; z < dataBase.length; z++) {
-      // on verifie si lidentifiant correspond au livre a supprimer
-      if (dataBase[z].uid === id) {
-        // soft delete
-        dataBase[z].isDead = true;
-      }
-    }
-    sauvegarderLeTout();
-    afficherTableau();
-  }
+
+  // Demande une confirmation avant suppression
+  if (!confirm("Supprimer ?")) return;
+
+  // Recherche du livre correspondant
+  const livre = dataBase.find(l => l.uid == id);
+  if (!livre) return;
+
+  // Soft delete
+  livre.isDead = true;
+
+  // Sauvegarde et rafraîchissement d’affichage
+  sauvegarderLeTout();
+  afficherTableau();
 };
+
 
 const rechercher = (valeursRecherche) => {
   // Récupère l'élément tableau complet
@@ -216,6 +211,7 @@ const rechercher = (valeursRecherche) => {
   }
 };
 
+
 // fonction pour tuer la base
 const resetDatabase = () => {
   // Efface complètement toutes les données stockées dans le localStorage
@@ -234,3 +230,31 @@ const afficherMessage = (message) => {
     zoneMessage.innerText = "";
   }, 3000);
 };
+
+
+// Retirer les appels de fonctions js inline-HTML
+window.addEventListener("DOMContentLoaded", () => {
+  // Lancer l'application principale
+  lancerApplication();
+
+  // ENREGISTRER
+  document.querySelector(".btn-add")
+    .addEventListener("click", executeSaveDataToMemory);
+
+  // RAZ/Reinitialiser
+  document.getElementById("btn-reset")
+    .addEventListener("click", resetDatabase);
+
+  // Champ de recherche
+  const searchField = document.querySelector(".search-field");
+  searchField.addEventListener("keyup", (e) => {
+    rechercher(e.target.value);
+  });
+
+  // Boutons de suppression (delegation pour le tableau)
+  document.addEventListener("click", (e) => {
+    if (e.target.matches(".btn-del")) {
+      supprimerLivre(e.target.dataset.id);
+    }
+  });
+});

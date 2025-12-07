@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
   </head>
 
-  <body onload="lancerApplication()">
+  <body>
 
     <!--conteneur principale -->
     <div class="wrapper">
@@ -27,7 +27,7 @@
         <input type="text" id="inp_C" placeholder="ISBN" />
 
         <!-- Bouton ENREGISTRER -->
-        <button class="btn-add" onclick="executeSaveDataToMemory()">Ajouter</button>
+        <button class="btn-add">
         ENREGISTRER
         </button>
 
@@ -60,7 +60,7 @@
       <br />
 
       <!-- bouton RAZ -->
-      <button class="btn-reset" onclick="resetDatabase()">⚠️ RAZ</button>
+      <button id="btn-reset">⚠️ Reinitialiser</button>
     </div>
 
     <!-- import de fichier JS -->
