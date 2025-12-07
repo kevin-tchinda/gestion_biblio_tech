@@ -1,36 +1,49 @@
 <!DOCTYPE html>
 <html lang="fr">
+
   <head>
     <meta charset="UTF-8" />
+    <!--titre original-->
     <title>Gestion Biblio</title>
     <link rel="stylesheet" href="css/style.css">
   </head>
+
   <body onload="lancerApplication()">
+
+    <!--conteneur principale -->
     <div class="wrapper">
       <h1>📚 BIBLIO MANAGER PRO</h1>
-      <div style="background: #222; padding: 15px">
+      <div id="formulaire-ajout" class="form-container"> <!--Bloc du formulaire d'ajout-->
         <input type="text" id="inp_A" placeholder="Titre..." />
         <input type="text" id="inp_B" placeholder="Auteur..." />
+
+        <!--listes des categories-->
         <select id="sel_X">
           <option value="1">Science-Fiction</option>
           <option value="2">Documentaire</option>
           <option value="3">Roman</option>
         </select>
-        <input type="text" id="inp_C" placeholder="ISBN" />
-        <button class="btn-add" onclick="executeSaveDataToMemory()">Ajouter</button>
 
-          ENREGISTRER
+        <input type="text" id="inp_C" placeholder="ISBN" />
+
+        <!-- Bouton ENREGISTRER -->
+        <button class="btn-add" onclick="executeSaveDataToMemory()">Ajouter</button>
+        ENREGISTRER
         </button>
+
         <br /><br />
+
+        <!--Recherche-->
         Recherche :
-        <input
-          type="text"
-          onkeyup="regarder(this.value)"
-          style="background: #ffffcc; color: black"
-        />
+        <input type="text" class="search-field" />
       </div>
+
+      <!--zone de message de l'utilisateur -->
       <p id="zone-m"></p>
+
+      <!--titre inventaire-->
       <h3>Inventaire (<span id="cpt">0</span>)</h3>
+
       <table id="tab">
         <thead>
           <tr>
@@ -41,11 +54,17 @@
             <th>Opt</th>
           </tr>
         </thead>
-        <tbody id="corps_du_tableau"></tbody>
+        <tbody id="corps-du-tableau"></tbody>
       </table>
+
       <br />
-      <button onclick="kill()">⚠️ RAZ</button>
+
+      <!-- bouton RAZ -->
+      <button class="btn-reset" onclick="resetDatabase()">⚠️ RAZ</button>
     </div>
+
+    <!-- import de fichier JS -->
     <script src="js/index.js"></script>
   </body>
+
 </html>
