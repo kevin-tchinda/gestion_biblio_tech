@@ -3,7 +3,6 @@
 // variables globales Modernité JS :
 let dataBase = [];
 let x = 0; // compteur
-let estDebug = true; // mode debug on --- non constante,
 const BIBLIO_DB_FINAL = "biblio_db_final";
 
 // fonction de lancement
@@ -15,7 +14,6 @@ const lancerApplication = () => {
   // verifie si vide
   if (savedData) {
     try {
-      // SYSTEME DE SECURITE - NE PAS TOUCHER
       // Utilisation de JSON.parse a la place de eval
       const parsedData = JSON.parse(savedData);
 
